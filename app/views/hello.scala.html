@@ -1,11 +1,13 @@
 @(name:String)
 <!doctype html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Hello</title>
-</head>
-<body>
-<h1>Hello <em>@name</em></h1>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.css")">
+  </head>
+  <body>
+    <h1>Hello <em>@name</em></h1>
+    <button type="button" class="btn btn-primary">Primary</button>
+  </body>
 </html>
