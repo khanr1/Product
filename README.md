@@ -111,3 +111,26 @@ Ok(views.html.hello(name))
 ```
 
 Opening a browser to  the address  ``` //localhost:9000/hello?name=Play! ``` will display  the "hello Play!"  in a  HTML structured page.
+
+# Chapter 2
+
+## Stylesheets and custom CSS
+
+Although it is possible to import Bootstrap as described in the book. Another way it to add the Bootstrap library directly in our  ```build.sbt ``` files via [**Webjars**](https://www.webjars.org/)
+``` sbt
+libraryDependencies += "org.webjars" % "bootstrap" % "2.1.1"
+```
+Note that using this method the version used in the book (2.0.2) is not availables. To limit variation between the book and this notes I picked the version 2.1.1.
+[**Webjars**](https://www.webjars.org/). Play automatically extracts the WebJar contents and makes them available via the Assets controller. Thus since our  route is :
+```http
+GET         /assets/*file           controllers.Assets.at(path="/public", file)
+```
+
+Then a WebJar file like bootstrap.css is available at:
+```
+/assets/lib/bootstrap/css/bootstrap.css
+```
+Then one can call the Bootstrap style in the htlm view by adding in the header
+``` Html
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")">
+```

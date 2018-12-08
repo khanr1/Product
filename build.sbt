@@ -11,7 +11,7 @@ libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 
 //webjars Bootstrap
-libraryDependencies += "org.webjars" % "bootstrap" % "4.1.3"
+libraryDependencies += "org.webjars" % "bootstrap" % "2.1.1"
 
 
 
