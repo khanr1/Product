@@ -1,6 +1,6 @@
 package models
 
-case class Product(ean: Long,name: String, drescription: String)
+case class Product(ean: Long,name: String, description: String)
 
 object Product{
   var products: Set[Product]=Set(
