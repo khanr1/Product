@@ -12,6 +12,8 @@
 - [Chapter 2](#chapter-2)
 	- [Stylesheets and custom CSS](#stylesheets-and-custom-css)
 	- [Language Localization and Security Configuration](#language-localization-and-security-configuration)
+	- [Model Creation](#model-creation)
+	- [Controller action method.](#controller-action-method)
 
 <!-- /TOC -->
 ## Introduction
@@ -182,3 +184,50 @@ we create the files mentioned above and add the lines
 
 * ```application.name= Product catalog``` in ```conf/messages```
 * ```application.name= Catalogue de produits``` in ```conf/messages```
+
+## Model Creation
+
+We now create a model ```Product```  which encapsulates our application data. We follow the book  and include three things in this application example:
+
+* *A model class*: The definition of the product and its attributes
+* *A data access object*: Code that provides access to the product data
+* *Test data*: A set of product object.
+
+We create the product model in the folder ``` app/models```. The code is similar to the one in the book.
+## Creating  the product list page
+## Controller action method.
+
+The controller is responsible for handling incoming HTTP requests and generate responses using the model and the view.
+
+Note that the way the product controller has been implemented in  [**Play for Scala**](https://www.manning.com/books/play-for-scala) is old. In Play 2.6 controller are classes to take advantage of Dependency Injection. In this notes we will be pragmatic and not  go in details with the  Dependency Injection pattern. Briefly, this design is used when you have a component, such as the controller, and it requires some other components as dependencies.Dependency Injection helps to separate the component behavior from it dependencies resolution. More detail about DI can be found and the [**Guice wiki**](https://github.com/google/guice/wiki/Motivation). In play  we inject a component dependencies via ```@Inject``` annotation.  The ```@Inject``` annotation is used usually  on constructors. for example:
+
+```scala
+import javax.inject._
+
+class MyComponent @Inject() (cc: ControllerComponents)
+extends AbstractController(cc) {
+  // ...
+}
+```
+
+Note that the ```@Inject```  annotation must come after the class name but before the constructor parameters, and must have parentheses. With that in mind the way to implement the ```Product``` controller is:
+```scala
+package controllers
+
+import play.api.mvc._
+import models.Product
+import javax.inject._
+
+
+class Products @Inject() (component:ControllerComponents)
+				extends BaseController {
+
+
+  def list = Action{ implicit request =>
+
+    val products=Product.findAll
+    Ok(views.html.products.list(products))
+  }
+}
+```
+Above our Product class dependends on the  ControllerComponents.
