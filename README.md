@@ -1,6 +1,19 @@
 # __Product__
 >Play framework tutorial based on [**Play for Scala**](https://www.manning.com/books/play-for-scala) with some notes.
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [__Product__](#product)
+	- [Introduction](#introduction)
+- [Chapitre 1](#chapitre-1)
+	- [Creating and running an empty application](#creating-and-running-an-empty-application)
+	- [Hello the World](#hello-the-world)
+	- [Creating an HTTP request parameter](#creating-an-http-request-parameter)
+	- [Creating an HTML page template.](#creating-an-html-page-template)
+- [Chapter 2](#chapter-2)
+	- [Stylesheets and custom CSS](#stylesheets-and-custom-css)
+	- [Language Localization and Security Configuration](#language-localization-and-security-configuration)
+
+<!-- /TOC -->
 ## Introduction
 
 This project follow the book [**Play for Scala**](https://www.manning.com/books/play-for-scala). Each branches of the project correspond to a chapter in the book. The master branch merge theall the branches.
@@ -134,3 +147,38 @@ Then one can call the Bootstrap style in the htlm view by adding in the header
 ``` Html
 <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")">
 ```
+
+## Language Localization and Security Configuration
+
+In Play 2.6, the ```application.langs``` and ```application.secret``` have been replaced by  ```play.i18n.langs``` and ```play.crypto.secret``` respectively. First  we open the ```conf/application.conf``` file and add
+
+```sbt
+play.http.secret.key = "changeme"
+play.http.secret.key=${?APPLICATION_SECRET}
+```
+The second line in that configuration sets the secret to come from an environment variable called APPLICATION_SECRET if such an environment variable is set, otherwise, it leaves the secret unchanged from the previous line. This secret string is used by play to generate cryptographic signatue like for the cookies session.
+
+Then for the  language configuration we add the line
+
+``` conf
+play.i18n {
+  # The application languages
+  langs = [ "en","fr" ]
+
+  # Whether the language cookie should be secure or not
+  #langCookieSecure = true
+
+  # Whether the HTTP only attribute of the cookie should be set to true
+  #langCookieHttpOnly = true
+}
+```
+
+The language supported by our application are english and french.We will use this configation interface to access application user interface text which are define in a message file for each languages
+
+* ```conf/messages``` Default messages for all languages, for messages not localized for a particular language
+* ``` conf/messages.fr``` for messages in French
+
+we create the files mentioned above and add the lines
+
+* ```application.name= Product catalog``` in ```conf/messages```
+* ```application.name= Catalogue de produits``` in ```conf/messages```
