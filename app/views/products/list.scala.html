@@ -1,10 +1,9 @@
-@(products: List[Product])(implicit message: Messages)
-
-@main(Messages("application.name")){
+@(products: List[Product])(implicit messages:Messages)
+@main(messages("application.name")){
   <dl class="products">
     @for(product <- products ){
-      <dt> product.name </dt>
-      <dm> product.description<dm>
+      <dt> @product.name </dt>
+      <dm> @product.description<dm>
     }
   </dl>
 }

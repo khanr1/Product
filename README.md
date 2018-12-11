@@ -194,7 +194,7 @@ We now create a model ```Product```  which encapsulates our application data. We
 * *Test data*: A set of product object.
 
 We create the product model in the folder ``` app/models```. The code is similar to the one in the book.
-## Creating  the product list page
+
 ## Controller action method.
 
 The controller is responsible for handling incoming HTTP requests and generate responses using the model and the view.
@@ -217,10 +217,11 @@ package controllers
 import play.api.mvc._
 import models.Product
 import javax.inject._
+import play.api.i18n._
 
 
-class Products @Inject() (component:ControllerComponents)
-				extends BaseController {
+
+class Products @Inject()(val controllerComponents: ControllerComponents)  extends BaseController with I18nSupport {
 
 
   def list = Action{ implicit request =>
@@ -229,5 +230,27 @@ class Products @Inject() (component:ControllerComponents)
     Ok(views.html.products.list(products))
   }
 }
+
 ```
-Above our Product class dependends on the  ControllerComponents.
+Above our Product class dependents on the  ControllerComponents and use the trait ```play.api.i18n.I18nSupport```. This trait allows us to access to the ```conf/messages.xxx``` through the ```MessageApi``` instance. More information can be found at:  [Internationalization with Messages](https://www.playframework.com/documentation/2.6.x/ScalaI18N).
+
+## Creating  the product list page template and the main
+
+Here instead of having an  ```implicit lang``` parameter we have a ```implicit Messages```.  parameter.
+```scala
+@(products: List[Product])(implicit messages:Messages)
+@main(messages("application.name")){
+  <dl class="products">
+    @for(product <- products ){
+      <dt> @product.name </dt>
+      <dm> @product.description<dm>
+    }
+  </dl>
+}
+```
+Similary for the main we replace the ```implicit Lang``` parameter with a ```implicit Messages```
+
+## Adding the Route.
+
+In the ```conf/routes``` we add the row ```GET     /Products                   controllers.Products.list
+```
