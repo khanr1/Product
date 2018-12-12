@@ -1,7 +1,8 @@
-
+@import url('https://fonts.googleapis.com/css?family=Monserrat');
 
 body {
   color:black;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body, p,label{
@@ -30,7 +31,7 @@ div.screenshot{
   padding-left: 20px;
 }
 
-.navbar .nav > li > a{
+.navbar .nav > li > a {
   color:#bbb;
 }
 

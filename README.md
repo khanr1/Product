@@ -14,11 +14,14 @@
 	- [Language Localization and Security Configuration](#language-localization-and-security-configuration)
 	- [Model Creation](#model-creation)
 	- [Controller action method.](#controller-action-method)
+	- [Creating  the product list page template and the main](#creating-the-product-list-page-template-and-the-main)
+	- [Adding the Route.](#adding-the-route)
+	- [Checking the language localization.](#checking-the-language-localization)
 
 <!-- /TOC -->
 ## Introduction
 
-This project follow the book [**Play for Scala**](https://www.manning.com/books/play-for-scala). Each branches of the project correspond to a chapter in the book. The master branch merge theall the branches.
+This project follow the book [**Play for Scala**](https://www.manning.com/books/play-for-scala). Each branches of the project correspond to a chapter in the book. The master branch merge the all the branches. This notes are largely inspired by the book.
 
 # Chapitre 1
 
@@ -252,5 +255,27 @@ Similary for the main we replace the ```implicit Lang``` parameter with a ```imp
 
 ## Adding the Route.
 
-In the ```conf/routes``` we add the row ```GET     /Products                   controllers.Products.list
+In the ```conf/routes``` we add the row ```GET     /Products                   controllers.Products.list```
+
+As in the book we redirect the index to the product page by modifying the index action in  ```HomeController.scala ```
+
+```scala
+def index() = Action { implicit request: Request[AnyContent] =>
+		Redirect(routes.Products.list)
+}
 ```
+
+## Checking the language localization.
+
+Play sets the language of the application if the language configuration in the HTTP request matches ones of the configured language of the web browser. The setting of the application are checked with the debug view in ```app/view/debug.scala.html```
+
+```HTML
+@()(implicit messages: Messages)
+@import play.api.Play.current
+<footer>
+  lang = @messages.lang.code,
+  user = @current.configuration.getString("environment.user"),
+  date = @(new java.util.Date().format("dd-MM-yyyy"))
+</footer>
+```
+As in the section [Creating  the product list page template and the main](#creating-the-product-list-page-template-and-the-main) we have an ```implicit messages: Messages``` instead of the ```implicit lang```. 
