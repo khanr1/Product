@@ -13,7 +13,7 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2
 //webjars Bootstrap
 libraryDependencies += "org.webjars" % "bootstrap" % "2.1.1"
 
-
+libraryDependencies += "net.sf.barcode4j" % "barcode4j" % "2.0"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.products.controllers._"

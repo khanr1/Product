@@ -1,1 +1,5 @@
 application.name= Catalogue des produits
+
+ean=EAN
+name=Nom
+description= Descriptif
