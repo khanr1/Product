@@ -3,3 +3,13 @@ application.name= Catalogue des produits
 ean=EAN
 name=Nom
 description= Descriptif
+
+
+products.form = Details du produit
+products.new = (nouveau)
+products.new.command=Nouveau
+products.new.submit = ajouter
+products.new.success= Produit ajouté
+
+validation.errors = corrigez les erreurs dans le formulaire
+validation.ean.duplicate = Un produit avec ce code Ean existe déjà

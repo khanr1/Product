@@ -17,6 +17,10 @@
 	- [Creating  the product list page template and the main](#creating-the-product-list-page-template-and-the-main)
 	- [Adding the Route.](#adding-the-route)
 	- [Checking the language localization.](#checking-the-language-localization)
+	- [Details and barCode.](#details-and-barcode)
+	- [Form, Form view and  Form validation](#form-form-view-and-form-validation)
+		- [Form](#form)
+		- [Form template](#form-template)
 
 <!-- /TOC -->
 ## Introduction
@@ -278,4 +282,54 @@ Play sets the language of the application if the language configuration in the H
   date = @(new java.util.Date().format("dd-MM-yyyy"))
 </footer>
 ```
-As in the section [Creating  the product list page template and the main](#creating-the-product-list-page-template-and-the-main) we have an ```implicit messages: Messages``` instead of the ```implicit lang```. 
+As in the section [Creating  the product list page template and the main](#creating-the-product-list-page-template-and-the-main) we have an ```implicit messages: Messages``` instead of the ```implicit lang```.
+
+## Details and barCode.
+
+Nothing change here with respect to the books. The only thing that one needs to be careful is to replace the ```implicit lang: Lang``` with ```implicit messages:Messages```.
+
+## Form, Form view and  Form validation
+
+### Form
+
+To use forms, we import the following packages:
+
+```scala
+import play.api.data._
+import play.api.data.Forms._
+```
+We a define a form structure. It consists of a mapping together with two functions that the form can use to map between itself and (in our case) an instance of our ``` Product ``` case class.
+
+```Scala
+val productForm: Form[Product]=Form(
+	mapping(
+		"ean"-> longNumber.verifying("validation.ean.duplicate",Product.findByEan(_).isEmpty),
+		"name" > nonEmptyText,
+		"description"-> nonEmptyText
+	)(Product.apply)(Product.unapply)
+)
+```
+The first part of the field specifies the field and the contraint the the input need to satisfy ("For example nonEmptyText") and the second and third parts are the function that the Form instance will use to create a Product (apply) and fill the form with a given Product (unapply).
+
+### Form template
+
+Now that we have a form, we want to use it in our template.We do this by including the form as a parameter to the view template. For ```editProduct.scala.html```, the header at the top of the page will look like this:
+```scala
+@(prodcutFrom: Form[Product])(implicit messages: Messages)
+```
+In order to create ```<form>``` tag, we use a wiew helper and set the action and method tag parameters according to the reverse routes
+```Scala
+@helper.form(action=routes.Products.save()){
+	 @CSRF.formField
+	<fieldset>
+		<legend> @messages("products.details", messages("products.new"))</legend>
+		@helper.inputText(productForm("ean"))
+		@helper.inputText(productForm("name"))
+		@helper.textarea(productForm("description"))
+	</fieldset>
+```
+
+Note here the difference withthe book. Namely the ```@CSRF``` which is used to protect against Cross Site REquest Forgery. The ```@CSRF.formField``` take a implicit request hearder as a parameter. Thus one need to have the header at the top of the page to look like this:
+```scala
+@(prodcutFrom: Form[Product])(implicit messages: Messages,request: RequestHeader)
+```

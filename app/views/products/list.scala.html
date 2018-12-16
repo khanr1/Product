@@ -1,4 +1,4 @@
-@(products: List[Product])(implicit messages:Messages)
+@(products: List[Product])(implicit flash: Flash, messages:Messages)
 @main(messages("application.name")){
   <dl class="products">
     @for(product <- products ){
@@ -6,4 +6,8 @@
       <dm> @product.description<dm>
     }
   </dl>
+  <p>
+    <a href ="@controllers.routes.Products.newProduct()" class="btn">
+      <i class="icon-plus"></i> @messages("products.new.command")</a>
+    </p>
 }
