@@ -333,3 +333,21 @@ Note here the difference withthe book. Namely the ```@CSRF``` which is used to p
 ```scala
 @(prodcutFrom: Form[Product])(implicit messages: Messages,request: RequestHeader)
 ```
+
+### Form validation
+
+The goal of the form is to collect information which are given by user of application and convert them into an instance of ```Product```. This is possible only if the input datas are valid. Imagine we want to add the ```Product``` which has been entered in the formby the user. This is done by adding to the Products controller the ``save``` function:
+
+``` Scala
+def save = Action{implicit request =>
+	val newProductForm = productForm.bindFromRequest()
+	newProductForm.fold(
+		hasError={form => Redirect(routes.Products.newProduct())},
+		success ={newProduct=> Product.add(newProduct)
+			Redirect(routes.Products.show(newProduct.ean))
+		}
+	)
+}
+```
+
+Here the ```bindFromRequest``` take the request parameters given by the users. If the parameters are wrong,  the fold method redirect to the ```newProduct form page``` else it adds the product to the ```products list``` and then redirect to the detail page of the product we just added.
